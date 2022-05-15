@@ -1,0 +1,21 @@
+POST http://localhost:9090/auth/signup
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwiZW1haWwiOiJ1c2VyIiwiaWQiOjEsImV4cCI6MTY1MzIzNDQ3OH0.Qi29Fyt8GZPJJE-aYuyx7LzH5Uy164ZjXIpO2KC1TVc
+
+{
+  "username": "admin",
+  "name": "admin",
+  "password": "user",
+  "email": "user"
+}
+###
+
+GET http://localhost:9090/film/all
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwiZW1haWwiOiJ1c2VyIiwiaWQiOjEsImV4cCI6MTY1MzIzNDQ3OH0.Qi29Fyt8GZPJJE-aYuyx7LzH5Uy164ZjXIpO2KC1TVc
+
+###
+
+POST http://localhost:9090/film/675353/addFavorite
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwiZW1haWwiOiJ1c2VyIiwiaWQiOjEsImV4cCI6MTY1MzIzNDQ3OH0.Qi29Fyt8GZPJJE-aYuyx7LzH5Uy164ZjXIpO2KC1TVc

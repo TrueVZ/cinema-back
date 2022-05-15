@@ -1,0 +1,23 @@
+version: "3.9"
+services:
+  go-rest-api:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    restart: always
+    depends_on:
+      - database
+    ports:
+      - 9090:9090
+    volumes:
+      - .:/code/
+
+  database:
+    image: postgres:13
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: hackme
+      POSTGRES_DB: cinema
+    ports:
+      - 5432:5432
