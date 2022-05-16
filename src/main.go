@@ -27,7 +27,7 @@ func main() {
 
 	router := router.RegisterRoutes(db)
 
-	if migrateError := db.AutoMigrate(&models.Film{}, &models.Crew{}, &models.Cast{}, &models.FilmRating{}, &models.FilmViewed{}, &models.FilmGenres{}, &models.User{}); migrateError != nil {
+	if migrateError := db.AutoMigrate(&models.Film{}, &models.Crew{}, &models.Cast{}, &models.FilmRating{}, &models.FilmGenres{}, &models.User{}); migrateError != nil {
 		log.Fatal("[ ERROR ] Couldn't migrate models!")
 	}
 

@@ -20,5 +20,4 @@ type Film struct {
 	Runtime      int
 	Adult        bool
 	Budget       int64
-	FilmViewed   FilmViewed
 }

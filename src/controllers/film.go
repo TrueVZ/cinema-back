@@ -61,12 +61,14 @@ func (FilmController) AddFilmToFavorite(db *gorm.DB) http.HandlerFunc {
 		userId := claims.Id
 		filmId, _ := strconv.ParseUint(params["id"], 10, 32)
 
-		filmViewed := models.FilmViewed{
-			UserID:   userId,
-			FilmID:   uint(filmId),
-			IsViewed: true,
-		}
-		db.Create(&filmViewed)
+		user := models.User{}
+		film := models.Film{}
+
+		db.First(&film, filmId)
+		db.First(&user, userId)
+		db.Model(&user).Association("Viewed").Append(&film)
+		db.Preload("Viewed").First(&user, userId)
+		helpers.RespondWithJSON(w, user.Viewed)
 	}
 }
 
@@ -78,6 +80,7 @@ func (FilmController) GetFavoritesFilms(db *gorm.DB) http.HandlerFunc {
 		if err != nil {
 			error.ApiError(w, http.StatusForbidden, err.Error())
 		}
+
 		user := models.User{}
 		userId := claims.Id
 
@@ -95,10 +98,16 @@ func (FilmController) RemoveFromFavorite(db *gorm.DB) http.HandlerFunc {
 		if err != nil {
 			error.ApiError(writer, http.StatusForbidden, err.Error())
 		}
+		filmId, _ := strconv.ParseUint(params["id"], 10, 32)
 		user := models.User{}
+		film := models.Film{}
 		userId := claims.Id
-		db.Where("user_id = ?", userId).Where("film_id = ?", params["id"]).Delete(&models.FilmViewed{})
+		db.First(&film, filmId)
 		db.Preload("Viewed").First(&user, userId)
+		result := db.Model(&user).Association("Viewed").Delete(&film)
+		if result != nil {
+			return
+		}
 		helpers.RespondWithJSON(writer, user.Viewed)
 	}
 }
