@@ -3,7 +3,6 @@ package helpers
 import (
 	"fmt"
 	"log"
-	"os"
 
 	"gorm.io/driver/postgres"
 
@@ -11,7 +10,7 @@ import (
 )
 
 func CreateDatabaseInstance() *gorm.DB {
-	dsn := os.Getenv("DATABASE_URL")
+	dsn := "host=database user=admin password=hackme dbname=cinema port=5432"
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 
 	if err != nil {

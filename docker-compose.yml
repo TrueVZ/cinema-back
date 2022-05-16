@@ -21,3 +21,7 @@ services:
       POSTGRES_DB: cinema
     ports:
       - 5432:5432
+
+networks:
+  NETWORK:
+    external: true    

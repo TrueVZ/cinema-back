@@ -30,6 +30,8 @@ func RegisterRoutes(db *gorm.DB) *mux.Router {
 	router.HandleFunc("/film/all", middleware.CheckAuth(FilmController.GetAllFilms(db))).Methods(http.MethodGet)
 	router.HandleFunc("/film/{id}", middleware.CheckAuth(FilmController.GetFilmById(db))).Methods(http.MethodGet)
 	router.HandleFunc("/film/{id}/addFavorite", middleware.CheckAuth(FilmController.AddFilmToFavorite(db))).Methods(http.MethodPost)
+	router.HandleFunc("/getFavorites", middleware.CheckAuth(FilmController.GetFavoritesFilms(db))).Methods(http.MethodGet)
+	router.HandleFunc("/film/{id}/removeFavorite", middleware.CheckAuth(FilmController.RemoveFromFavorite(db))).Methods(http.MethodDelete)
 
 	return router
 }

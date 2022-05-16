@@ -67,6 +67,38 @@ func (FilmController) AddFilmToFavorite(db *gorm.DB) http.HandlerFunc {
 			IsViewed: true,
 		}
 		db.Create(&filmViewed)
+	}
+}
 
+func (FilmController) GetFavoritesFilms(db *gorm.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		authHeader := r.Header.Get("Authorization")
+		token := strings.Split(authHeader, " ")[1]
+		claims, err := helpers.VerifyJwtToken(token)
+		if err != nil {
+			error.ApiError(w, http.StatusForbidden, err.Error())
+		}
+		user := models.User{}
+		userId := claims.Id
+
+		db.Preload("Viewed").First(&user, userId)
+		helpers.RespondWithJSON(w, user.Viewed)
+	}
+}
+
+func (FilmController) RemoveFromFavorite(db *gorm.DB) http.HandlerFunc {
+	return func(writer http.ResponseWriter, request *http.Request) {
+		params := mux.Vars(request)
+		authHeader := request.Header.Get("Authorization")
+		token := strings.Split(authHeader, " ")[1]
+		claims, err := helpers.VerifyJwtToken(token)
+		if err != nil {
+			error.ApiError(writer, http.StatusForbidden, err.Error())
+		}
+		user := models.User{}
+		userId := claims.Id
+		db.Where("user_id = ?", userId).Where("film_id = ?", params["id"]).Delete(&models.FilmViewed{})
+		db.Preload("Viewed").First(&user, userId)
+		helpers.RespondWithJSON(writer, user.Viewed)
 	}
 }

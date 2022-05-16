@@ -2,10 +2,11 @@ package main
 
 import (
 	"fmt"
-	"github.com/rs/cors"
 	"log"
 	"net/http"
 	"os"
+
+	"github.com/rs/cors"
 
 	"github.com/joho/godotenv"
 
@@ -18,10 +19,6 @@ func init() {
 	if envLoadError := godotenv.Load(); envLoadError != nil {
 		log.Fatal("[ ERROR ] Failed to load .env file")
 	}
-}
-
-func enableCors(w *http.ResponseWriter) {
-	(*w).Header().Set("Access-Control-Allow-Origin", "*")
 }
 
 func main() {
@@ -48,6 +45,6 @@ func main() {
 	handler := c.Handler(router)
 
 	fmt.Printf("[ OK ] Server is Started and Listening on port: %v", PORT)
-	helpers.CreateTmdbClient(db)
+	//helpers.CreateTmdbClient(db)
 	log.Fatal(http.ListenAndServe(":"+PORT, handler))
 }
